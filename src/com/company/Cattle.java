@@ -1,0 +1,16 @@
+package com.company;
+
+public class Cattle extends Animal {
+    public Cattle(String name, String sex, int health, int price){
+        super(name, sex, health, price);
+    }
+
+    @Override
+    public void eatFood(Food food) {
+        if (food.getType().equals("Grain")) {
+            super.eatFood(food);
+        } else {
+            System.out.println("Cattle can only eat grains!");
+        }
+    }
+}
