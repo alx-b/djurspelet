@@ -29,7 +29,7 @@ public class Store {
         };
     }
 
-
+/*
     public void displayStore(Player player){
         Scanner scan = new Scanner(System.in);
         boolean loop = true;
@@ -51,7 +51,7 @@ public class Store {
             }
         }
     }
-
+*/
 
     public void displayAnimalForSell(){
         System.out.println("==== Animals for sell ====");
@@ -94,16 +94,18 @@ public class Store {
 
     public void transaction(Player player, String selection){
         Animal animal = animalForSellChoices[Integer.parseInt(selection)-1];
-        if (playerHasEnoughMoney(player.getMoney(), animal.getPrice())){
-            animal.setName(nameAnimal());
-            player.removeMoney(animal.getPrice());
-            player.addAnimal(animal);
+        Animal newAnimal = (Animal) animal.clone();
+        if (playerHasEnoughMoney(player.getMoney(), newAnimal.getPrice())){
+            newAnimal.setName(nameAnimal());
+            player.removeMoney(newAnimal.getPrice());
+            player.addAnimal(newAnimal);
         }
     }
 
 
     public void transactionFood(Player player, String selection){
         Food food = foodForSellChoices[Integer.parseInt(selection)-1];
+        Food newFood = (Food) food.clone();
         if (playerHasEnoughMoney(player.getMoney(), food.getPrice())){
             player.removeMoney(food.getPrice());
             player.addFood(food);
@@ -122,36 +124,35 @@ public class Store {
         Scanner scan = new Scanner(System.in);
         boolean loop = true;
         while (loop){
-            int idx = (displayPlayerAnimalToBuy(player.getAnimals()) + 1);
-            System.out.println(idx + ". Go back");
+            int idx_quit = (displayPlayerAnimalToBuy(player.getAnimals()) + 1);
+            System.out.println(idx_quit + ". Done");
             System.out.print("Enter a number: ");
             String selection = scan.nextLine();
-            if (Integer.parseInt(selection) < idx){
+            if (Integer.parseInt(selection) < idx_quit){
                 transactionBuyingFromPlayer(player, selection);
-            } else if (Integer.parseInt(selection) == idx){
+            } else if (Integer.parseInt(selection) == idx_quit){
                 loop = false;
             } else {
-                System.out.println("Enter a number from 1 to " + idx + ".");
+                System.out.println("Enter a number from 1 to " + idx_quit + ".");
             }
         }
     }
 
-    //public void sellAnimal(Player player){
     public void sellAnimal(Player player){
         Scanner scan = new Scanner(System.in);
         boolean loop = true;
         while (loop){
+            int idx_quit = (this.animalForSellChoices.length + 1);
             displayAnimalForSell();
-            System.out.println("6. Go back");
+            System.out.println(idx_quit + ". Done");
             System.out.print("Enter a number: ");
             String selection = scan.nextLine();
-            switch (selection){
-                case "1": case "2": case "3": case "4": case "5": case "6": case "7": case "8": case "9":
-                case "10": transaction(player, selection);
-                case "11": loop = false; break;
-                default:
-                    System.out.println("Enter a number from 1 to 6.");
-                    break;
+            if (Integer.parseInt(selection) < idx_quit) {
+                transaction(player, selection);
+            } else if (Integer.parseInt(selection) == idx_quit) {
+                loop = false;
+            } else {
+                System.out.println("Enter a number from 1 to " + idx_quit + ".");
             }
         }
     }
@@ -161,13 +162,13 @@ public class Store {
         boolean loop = true;
         while (loop) {
             displayFoodToSell();
-            System.out.println("4. Go back");
+            System.out.println("4. Done");
             System.out.print("Enter a number: ");
             String selection = scan.nextLine();
             switch (selection){
                 case "1":
                 case "2":
-                case "3": transactionFood(player, selection);
+                case "3": transactionFood(player, selection); break;
                 case "4": loop = false; break;
                 default:
                     System.out.println("Enter a number from 1 to 4.");
