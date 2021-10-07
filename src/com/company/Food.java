@@ -1,6 +1,6 @@
 package com.company;
 
-abstract class Food {
+abstract class Food implements Cloneable{
     protected String type;
     protected int healthBonus;
     protected int price;
@@ -9,6 +9,16 @@ abstract class Food {
         this.type = this.getClass().getSimpleName();
         this.healthBonus = healthBonus;
         this.price = price;
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public int getPrice() {
